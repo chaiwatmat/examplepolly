@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -12,9 +13,16 @@ namespace console {
         static async Task Main(string[] args) {
             LogProvider.SetCurrentLogProvider(new ConsoleLogProvider());
 
-            await RetryEvery5Seconds();
-            await RetryUntilSuccess();
-            await RunProgramRunExample();
+            var tasks = new List<Task>();
+            var task1 = RetryEvery5Seconds();
+            var task2 = RetryUntilSuccess();
+            var task3 = RunProgramRunExample();
+
+            tasks.Add(task1);
+            tasks.Add(task2);
+            tasks.Add(task3);
+
+            Task.WhenAll(tasks);
 
             Console.WriteLine("Press any key to close the application");
             Console.ReadKey();
