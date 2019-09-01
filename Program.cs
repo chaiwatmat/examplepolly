@@ -13,9 +13,11 @@ namespace console {
             var response = await Policy
                 .HandleResult<HttpResponseMessage> (message => !message.IsSuccessStatusCode)
                 .WaitAndRetryAsync (new [] {
-                    TimeSpan.FromSeconds (1),
-                        TimeSpan.FromSeconds (3),
-                        TimeSpan.FromSeconds (9)
+                    TimeSpan.FromSeconds (5),
+                        TimeSpan.FromSeconds (5),
+                        TimeSpan.FromSeconds (5),
+                        TimeSpan.FromSeconds (5),
+                        TimeSpan.FromSeconds (5)
                 }, (result, timeSpan, retryCount, context) => {
                     Console.WriteLine ($"Request failed with {result.Result.StatusCode}. Retry count = {retryCount}. Waiting {timeSpan} before next retry. ");
                 })
